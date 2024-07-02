@@ -3,16 +3,15 @@ import java.io.*;
 public class Main {
   public static void main(String[] args) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    br.readLine();
-    char[] chars = br.readLine().toCharArray();
+    int len = Integer.parseInt(br.readLine());
+    String str = br.readLine();
 
-    int M = 31;
-    int sum = 0;
-    for (int i = 0; i < chars.length; i++) {
-      int a = chars[i] - 96;
-      double b = Math.pow(M, i);
-      sum += (a * b) % 1234567891;
+    long b = 1;
+    long sum = 0;
+    for (int i = 0; i < len; i++) {
+      sum += (str.charAt(i) - 96) * b;
+      b = (b * 31) % 1234567891;
     }
-    System.out.println(sum);
+    System.out.println(sum % 1234567891);
   }
 }
