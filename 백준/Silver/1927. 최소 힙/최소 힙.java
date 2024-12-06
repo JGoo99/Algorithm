@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class Main {
 
@@ -23,28 +22,31 @@ public class Main {
                 count++;
                 return;
             }
+            
             int idx = search(x);
-
-            for (int i = top + count; i > idx; i--) {
-                heap[i] = heap[i - 1];
-            }
+            move(idx);
             heap[idx] = x;
             top = Math.min(top, idx);
             count++;
         }
 
+        private void move(int idx) {
+            for (int i = top + count; i > idx; i--) {
+                heap[i] = heap[i - 1];
+            }
+        }
+
         public int search(int x) {
             int start = top;
             int end = top + count;
-            int mid = (start + end) / 2;
 
             while (start < end) {
-                mid = (start + end) / 2;
+                int mid = (start + end) / 2;
                 if (heap[mid] < x) {
                     start = mid + 1;
-                } else if (heap[mid] >= x) {
-                    end = mid;
+                    continue;
                 }
+                end = mid;
             }
             return start;
         }
@@ -55,13 +57,6 @@ public class Main {
                 return heap[top++];
             }
             return heap[top];
-        }
-
-        @Override
-        public String toString() {
-            return Arrays.toString(heap) + "\n" +
-                    "top: " + top + "\n" +
-                    "count: " + count;
         }
     }
 
