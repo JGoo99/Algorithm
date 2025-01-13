@@ -20,9 +20,6 @@ public class Main {
             for (int j = 1; j * j < i; j++) {
                 int leftIdx = j * j;
                 int rightIdx = i - leftIdx;
-                if (leftIdx > rightIdx) {
-                    break;
-                }
                 minValue = Math.min(minValue, dp[leftIdx] + dp[rightIdx]);
             }
             dp[i] = minValue;
