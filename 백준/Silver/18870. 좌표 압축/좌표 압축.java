@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -12,42 +13,25 @@ public class Main {
 
         int n = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        Num[] nums = new Num[n];
+        int[] nums = new int[n];
         for (int i = 0; i < n; i++) {
-            nums[i] = new Num(Integer.parseInt(st.nextToken()));
+            nums[i] = Integer.parseInt(st.nextToken());
         }
-        
-        Num[] copied = nums.clone();
+
+        int[] copied = nums.clone();
         Arrays.sort(copied);
 
-        for (int i = 1; i < copied.length; i++) {
-            Num prev = copied[i - 1];
-            Num cur = copied[i];
-            
-            cur.order = prev.order;
-            if (prev.value < cur.value) {
-                cur.order++;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int cnt = 0;
+        for (int num : copied) {
+            if (!map.containsKey(num)) {
+                map.put(num, cnt++);
             }
         }
 
-        for (Num num : nums) {
-            sb.append(num.order + " ");
+        for (int num : nums) {
+            sb.append(map.get(num) + " ");
         }
         System.out.println(sb);
-    }
-
-    public static class Num implements Comparable<Num> {
-        int value;
-        int order;
-
-        public Num(int value) {
-            this.value = value;
-            this.order = 0;
-        }
-
-        @Override
-        public int compareTo(Num o) {
-            return this.value - o.value;
-        }
     }
 }
