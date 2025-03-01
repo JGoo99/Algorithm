@@ -1,36 +1,24 @@
-import java.util.*;
 import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        br.readLine(); // m
+        int m = Integer.parseInt(br.readLine());
 
-        String[] answer = new String[2 * n + 1];
-        for (int i = 0; i < answer.length; i++) {
-            if (i % 2 == 0) {
-                answer[i] = "I";
-            } else {
-                answer[i] = "O";
+        char[] input = br.readLine().toCharArray();
+        int[] dp = new int[input.length];
+
+        int answer = 0;
+        for (int i = 0; i < m; i++) {
+            if (i - 2 * n >= 0 && dp[i] - dp[i - 2 * n] == n) {
+                answer++;
+            }
+            if (i + 2 < m && input[i] == 'I' && input[i + 1] == 'O' && input[i + 2] == 'I') {
+                dp[i + 2] = dp[i] + 1;
+                i++;
             }
         }
-
-        args = br.readLine().split("");
-        int cnt = 0;
-        for (int i = 0; i < args.length; i++) {
-            if (args.length - i < answer.length) break;
-            if (args[i].equals("O")) continue;
-
-            cnt++;
-            for (int j = 0; j < answer.length; j++) {
-                if (i + j < args.length && answer[j].equals(args[i + j])) {
-                    continue;
-                }
-                cnt--;
-                break;
-            }
-        }
-        System.out.println(cnt);
+        System.out.println(answer);
     }
 }
