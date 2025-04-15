@@ -1,15 +1,8 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    private static Map<Integer, Integer> cnts = new HashMap<>();
+    private static TreeMap<Integer, Integer> map = new TreeMap<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,11 +11,8 @@ public class Main {
         int t = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < t; i++) {
-            Queue<Integer> q = new PriorityQueue<>();
-            Queue<Integer> rq = new PriorityQueue<>(Comparator.reverseOrder());
-            cnts = new HashMap<>();
-
             int k = Integer.parseInt(br.readLine());
+            map = new TreeMap<>();
 
             for (int j = 0; j < k; j++) {
                 StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -30,50 +20,27 @@ public class Main {
                 int value = Integer.parseInt(st.nextToken());
 
                 if ("I".equals(order)) {
-                    q.add(value);
-                    rq.add(value);
-                    cnts.put(value, cnts.getOrDefault(value, 0) + 1);
+                    map.put(value, map.getOrDefault(value, 0) + 1);
                 } else {
-                    if  (cnts.isEmpty()) continue;
+                    if  (map.isEmpty()) continue;
+                    int key;
                     if (value == 1) {
-                        delete(rq);
+                        key = map.lastKey();
                     } else {
-                        delete(q);
+                        key = map.firstKey();
+                    }
+                    if (map.put(key, map.get(key) - 1) == 1) {
+                        map.remove(key);
                     }
                 }
             }
 
-            if  (cnts.isEmpty()) {
+            if  (map.isEmpty()) {
                 sb.append("EMPTY\n");
             } else {
-                int max = delete(rq);
-                sb.append(max + " ");
-                if (!cnts.isEmpty()) {
-                    sb.append(delete(q) + "\n");
-                } else {
-                    sb.append(max + "\n");
-                }
+                sb.append(map.lastKey() + " " + map.firstKey() + "\n");
             }
         }
         System.out.println(sb);
-    }
-
-    private static int delete(Queue<Integer> q) {
-        int cur = -1;
-        while (true) {
-            cur = q.poll();
-            int cnt = cnts.getOrDefault(cur, 0);
-            if (cnt == 0) {
-                continue;
-            }
-
-            if (cnt == 1) {
-                cnts.remove(cur);
-            } else {
-                cnts.put(cur, cnt - 1);
-            }
-            break;
-        }
-        return cur;
     }
 }
